@@ -8,7 +8,7 @@ let
     pkgs = (import (sources.static-haskell-nix + "/survey/default.nix") {
       # This is the nixpkgs revision we are modifying.
       # We pinned the revision with 'niv add NixOS/nixpkgs -a rev=<sha256>
-      normalPkgs = import sources.nixpkgs {};
+      normalPkgs = import sources.nixpkgs { system = "x86_64-linux"; };
     }).pkgs;
 
     # Nix usually takes all files in the source directory into consideration and
