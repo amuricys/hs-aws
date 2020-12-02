@@ -1,7 +1,7 @@
 provider "aws" {
     region  = "eu-north-1"
     access_key = "AKIAJZGYAST5JFFYH5OQ"
-    secret_key = "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"
+    secret_key = "yAKwGbNYggCKnfv9xwCmsOiAYRQlBGxyvaFx4ans" // This secret_key doesn't exist anymore c:
 }
 
 resource "aws_lambda_function" "hs_lambda" {
