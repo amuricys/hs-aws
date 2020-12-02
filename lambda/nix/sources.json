@@ -1,4 +1,16 @@
 {
+    "nixpkgs": {
+        "branch": "master",
+        "description": "Nix Packages collection",
+        "homepage": "",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d48bc3e8158d4e6febfa0d88c69cbfd432688c11",
+        "sha256": "18vxg753ljmp2yp7mqnqzb4hqwml7v46q1maglgwwisa8hq5f95w",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/d48bc3e8158d4e6febfa0d88c69cbfd432688c11.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "static-haskell-nix": {
         "branch": "master",
         "description": "easily build most Haskell programs into fully static Linux executables",
