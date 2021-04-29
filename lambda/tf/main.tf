@@ -1,14 +1,19 @@
+variable "secret_k" {
+  type = string
+  sensitive = true
+}
+
 provider "aws" {
     region  = "eu-north-1"
-    access_key = "AKIAJZGYAST5JFFYH5OQ"
-    secret_key = "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" // This secret_key doesn't exist anymore c:
+    access_key = "AKIA2FFBOJTVXCDSYOKB"
+    secret_key = var.secret_k 
 }
 
 resource "aws_lambda_function" "hs_lambda" {
   filename      = "hs-lambda.zip"
   function_name = "hs-lambda"
   role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "exports.test"
+  handler       = "simplyMyHandler"
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
   # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:

@@ -3,38 +3,32 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE RankNTypes #-}
+{-# OPTIONS_GHC -fno-warn-unused-binds #-}
+{-# OPTIONS_GHC -fno-warn-unused-imports #-}
 
 module Main where
 
-import Aws.Lambda
-import Aws.Lambda.Runtime
+import Aws.Lambda 
 import GHC.Generics
-import Data.Aeson
-import Data.Aeson.Encode.Pretty
 import Data.Either ()
 import Data.Text as T
 import Data.Text.Lazy (toStrict)
 import Data.Text.Lazy.Encoding (decodeUtf8)
 import Network.HTTP.Types.Header
 
+
 main :: IO ()
-main =  runLambda run
-  where
-   run ::  LambdaOptions -> IO (Either a LambdaResult)
-   run opts = do
-    result <- either (error . show) id $ handler <$> (decodeObj (eventObject opts)) <*> (decodeObj (contextObject opts))
-    either error (pure . Right . StandaloneLambdaResult . encodeObj) result
+main = runLambdaHaskellRuntime defaultDispatcherOptions (return ()) id (addStandaloneLambdaHandler "simplyMyHandler" myStandaloneCallback)
 
-type Request = Value
+myStandaloneCallback :: String -> Context () -> IO (Either String String)
+myStandaloneCallback s _ = return $ Right s
 
-data Response = Response
-  { statusCode :: Int
-  , headers :: [(Text, Text)]
-  , body :: Text
-  , isBase64Encoded :: Bool
-  } deriving (Generic, ToJSON)
-
-handler :: Request -> Context -> IO (Either String Response)
-handler e context = return
-    $ Right
-    $ Response 200 mempty (T.toUpper $ toStrict $ decodeUtf8 $ encodePretty e) False
+myHandler :: Handler StandaloneHandlerType IO () String String String
+myHandler = StandaloneLambdaHandler myStandaloneCallback 
